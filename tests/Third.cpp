@@ -104,10 +104,13 @@ class DemoGraphics : public gm::Graphics<Demo> {
 // removido, e agora a herança de Demo é direta de mbe::Game::State
 class Demo : public mbe::Game::State {
  public:
-    // O construtor recebe um array de 2 players, com default definido como
-    // dois DemoPlayers defaults (i.e., players humanos)
-    Demo(const std::array<DemoPlayer, 2>& players = {DemoPlayer(), DemoPlayer()}) 
-    : players(players) {
+    // O construtor recebe dois players que precisam ser movidos
+    // devido ao uso de std::unique_ptr na classe DemoPlayers
+    // O default inicializa os dois DemoPlayers com o default de DemoPlayer
+    // (i.e., players humanos)
+    Demo(DemoPlayer&& p1 = DemoPlayer(),
+         DemoPlayer&& p2 = DemoPlayer()) 
+    : players{std::move(p1), std::move(p2)} {
         for (int i = 0; i < 15; i++) {
             board.push_back(std::vector<unsigned>(15, 2));
         }
