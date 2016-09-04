@@ -8,7 +8,7 @@ mbe::Engine::Engine(Game* const game, double width, double height,
  : WIDTH(width), HEIGHT(height), TITLE(title),
    windowPtr(new Game::Renderer(
     sf::VideoMode(WIDTH, HEIGHT),
-    TITLE, sf::Style::Default,
+    TITLE, sf::Style::Close | sf::Style::Titlebar,
     desiredContextSettings())),
    window(*windowPtr),
    gamePtr(game), game(*gamePtr) {
