@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include "Traits.hpp"
-#include <iostream>
 
 template<typename G>
 void gm::Graphics<G>::drawStone(const Stone& stone, Renderer& window) const {
