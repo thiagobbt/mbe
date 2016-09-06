@@ -1,21 +1,12 @@
 #include <iostream>
 #include "mbe/Engine.hpp"
 #include "multimedia/Gomoku.hpp"
-#include "Utilities.hpp"
-#include "IA.hpp"
-#include "DemoPlayer.hpp"
-#include "DemoGraphics.hpp"
-#include "EndState.hpp"
-#include "Demo.hpp"
-
-mbe::Game::State::Transition EndState::onProcessInput(Input& input) {
-    for (auto event : input) {
-        if (event.type == sf::Event::MouseButtonPressed) {
-            return {Transition::Type::REPLACE, new Demo(DemoPlayer(), DemoPlayer(new Skynet()))};
-        }
-    }
-    return {Transition::Type::SELF, this};
-}
+#include "IA/Utilities.hpp"
+#include "IA/IA.hpp"
+#include "IA/DemoPlayer.hpp"
+#include "IA/DemoGraphics.hpp"
+#include "IA/EndState.hpp"
+#include "IA/Demo.hpp"
 
 // Implementação do método doUpdate de DemoGraphics (feito aqui em baixo porque
 // necessitava do tipo Demo completamente definido, lembra da forward declaration?)
