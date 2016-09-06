@@ -1,6 +1,9 @@
 #ifndef DEMOPLAYER_HPP
 #define DEMOPLAYER_HPP
 
+#include "multimedia/Gomoku.hpp"
+#include "IA/Utilities.hpp"
+
 // DemoPlayer é nosso Player, herdando de gm::Player, o qual requer dois templates:
 // um objeto sobre o qual pode analisar sua jogada (Board) e a saída do processamento
 // das entradas do jogo (gm::Position). Um jogador humano nunca precisa analisar o 

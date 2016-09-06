@@ -1,6 +1,11 @@
 #ifndef DEMO_HPP
 #define DEMO_HPP
 
+#include "IA/DemoPlayer.hpp"
+#include "IA/EndState.hpp"
+#include "IA/DemoGraphics.hpp"
+
+
 class Demo : public mbe::Game::State {
  public:
     Demo(DemoPlayer&& p1 = DemoPlayer(),

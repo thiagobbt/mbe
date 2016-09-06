@@ -1,6 +1,14 @@
 #ifndef ENDSTATE_HPP
 #define ENDSTATE_HPP
 
+#include <iostream>
+#include "mbe/Engine.hpp"
+#include "base/GameState.hpp"
+#include "IA/Utilities.hpp"
+#include "IA/IA.hpp"
+
+class Demo;
+
 class EndState : public mbe::Game::State {
  public:
     EndState(Casa cor = Casa::PRETA) : corGanhador(cor){}

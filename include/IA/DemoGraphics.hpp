@@ -1,6 +1,10 @@
 #ifndef DEMOGRAPHICS_HPP
 #define DEMOGRAPHICS_HPP
 
+#include <SFML/Graphics.hpp>
+#include <list>
+#include "multimedia/Gomoku.hpp"
+
 class Demo;
 
 // Para uma partida de Gomoku, multimedia/Gomoku.hpp define um Component chamado

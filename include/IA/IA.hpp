@@ -2,6 +2,7 @@
 #define IA_HPP
 
 #include "Utilities.hpp"
+#include "multimedia/Gomoku.hpp"
 
 // Skynet é nossa IA, ela herda de um componente definido em multimedia/Gomoku.hpp,
 // o PlayerHandler. O parâmetro de template dessa classe define o tipo de objeto que
