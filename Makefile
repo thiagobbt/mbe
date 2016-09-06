@@ -31,10 +31,10 @@ TSTEXEC   :=$(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%,$(TSTFILE))
 .PHONY: all makedir clean clean_deps clean_all tests run
 
 ################################# MAIN RULES ##################################
+all: makedir $(EXEC)
+
 run: $(EXEC)
 	$(EXEC)
-
-all: makedir $(EXEC)
 
 $(EXEC): $(OBJ)
 	@echo "[linking] $@"
