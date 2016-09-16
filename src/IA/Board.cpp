@@ -10,7 +10,7 @@ Board::Board() {
 }
 
 Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
-	int count_linha = 1;
+    int count_linha = 1;
     int count_coluna = 1;
     int count_diag1 = 1;
     int count_diag2 = 1;

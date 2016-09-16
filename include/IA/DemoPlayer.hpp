@@ -40,4 +40,3 @@ class DemoPlayer : public gm::Player<Board, gm::Position> {
 };
 
 #endif /* DEMOPLAYER_HPP */
-

@@ -52,4 +52,3 @@ class EndState : public mbe::Game::State {
 };
 
 #endif /* ENDSTATE_HPP */
-

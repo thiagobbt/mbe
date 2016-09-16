@@ -78,4 +78,3 @@ class Demo : public mbe::Game::State {
 };
 
 #endif /* DEMO_HPP */
-

@@ -17,4 +17,3 @@ class DemoGraphics : public gm::Graphics<Demo> {
 };
 
 #endif /* DEMOGRAPHICS_HPP */
-
