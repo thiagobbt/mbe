@@ -10,11 +10,16 @@ class Skynet : public gm::PlayerHandler<Board> {
  private:
     Casa cor;
 
-    int minimax(Board& board, int level, Casa cor, int alpha = INT_MAX, int beta = INT_MAX);
+    struct Score {
+        int score;
+        gm::Position position;
+    };
+
+    Score minimax(Board& board, int level, int alpha = INT_MIN, int beta = INT_MAX);
     gm::Position minimax_base(Board& board);
     gm::Position dummy_ia(Board& board);
 
-    int heuristica(Board& board, int row, int col);
+    int heuristica(Board& board);
 
     int utilidade(Board& board);
     gm::Position doUpdate(Board& board, gm::GameInput& input) override;

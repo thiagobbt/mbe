@@ -56,16 +56,15 @@ class Demo : public mbe::Game::State {
         if (move != gm::Position{-1, -1}) {
             // Verifica se a posição está desocupada
             if (board.getPosition(move.row, move.column) == Casa::VAZIA) {
-                board.nJogadas++;
                 // Marca a posição como jogada do currentPlayer
-                board.jogar(static_cast<Casa>(currentPlayer+1), move);
+                board.jogar(move);
 
-                bool jogadorGanhou = board.detectaFimDeJogo(move.row, move.column, static_cast<Casa>(currentPlayer+1));
+                bool jogadorGanhou = board.detectaFimDeJogo(move);
 
                 if (jogadorGanhou) {   
                     std::cout << "Fim de Jogo. Jogador " << currentPlayer << " venceu!" << std::endl;
                     return {Transition::Type::STORE, new EndState(static_cast<Casa>(currentPlayer+1))};
-                } else if (board.nJogadas >= 225) {
+                } else if (board.getNumJogadas() >= 225) {
                     std::cout << "Fim de Jogo. Empate!" << std::endl;
                     return {Transition::Type::STORE, new EndState(Casa::VAZIA)};
                 }

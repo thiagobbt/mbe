@@ -9,12 +9,16 @@ Board::Board() {
     }
 }
 
-int* Board::detectarSequencias(int row, int col, Casa cor, int tolerancia) {
+Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
 	int count_linha = 1;
     int count_coluna = 1;
     int count_diag1 = 1;
     int count_diag2 = 1;
     int pulados = 0;
+
+    int row = pos.row;
+    int col = pos.column;
+    Casa cor = getOpponent();
 
     for (int curr_col = col-1; curr_col >= std::max(0, curr_col-4-tolerancia); curr_col--) {
         if (board[row][curr_col] == cor) {
@@ -138,18 +142,14 @@ int* Board::detectarSequencias(int row, int col, Casa cor, int tolerancia) {
         }
     }
 
-    return new int[4]{count_coluna, count_linha, count_diag1, count_diag2};
+    return {count_coluna, count_linha, count_diag1, count_diag2};
 }
 
-bool Board::detectaFimDeJogo(int row, int col, Casa cor) {
-    int* seq = detectarSequencias(row, col, cor, 0);
-    int maxTamSeq = 0;
+bool Board::detectaFimDeJogo(gm::Position pos) {
+    Sequencias seq = detectarSequencias(pos, 0);
+    int maxTamSeq = std::max(std::max(seq.coluna, seq.linha), std::max(seq.diag_primaria, seq.diag_secundaria));
 
-    for (int i = 0; i < 4; i++) {
-        if (seq[i] > maxTamSeq) maxTamSeq = seq[i];
-    }
-    
-    if (maxTamSeq == 5) {
+    if (maxTamSeq >= 5) {
         gameFinished = true;
         return true;
     }
