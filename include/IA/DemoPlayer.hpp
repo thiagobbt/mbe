@@ -3,6 +3,7 @@
 
 #include "multimedia/Gomoku.hpp"
 #include "IA/Utilities.hpp"
+#include "IA/Board.hpp"
 
 // DemoPlayer é nosso Player, herdando de gm::Player, o qual requer dois templates:
 // um objeto sobre o qual pode analisar sua jogada (Board) e a saída do processamento

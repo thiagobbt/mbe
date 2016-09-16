@@ -17,7 +17,7 @@ void DemoGraphics::doUpdate(Demo& demo, gm::Renderer& renderer) {
     auto &stones = demo.getBoard();
     // Loop grotesco para descobrir onde estão as pedras e desenhá-las
     int x = 0;
-    for (auto &rowOfStones : stones) {
+    for (auto &rowOfStones : stones.board) {
         int y = 0;
         for(auto &stone : rowOfStones) {
             if (stone != Casa::VAZIA) {

@@ -13,6 +13,6 @@ enum class Direction {
     SW, S, SE
 };
 
-using Board = Casa[15][15];
+// using Board = Casa[15][15];
 
 #endif // UTILITIES_HPP

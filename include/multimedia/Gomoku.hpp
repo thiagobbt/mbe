@@ -6,6 +6,8 @@
 
 #include "base/Component.hpp"
 #include "base/Player.hpp"
+#include <SFML/Graphics.hpp>
+#include <list>
 
 // Gomoku Multimedia
 namespace gm {
