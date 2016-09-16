@@ -37,7 +37,11 @@ class EndState : public mbe::Game::State {
         text.setCharacterSize(30);
         text.setStyle(sf::Text::Bold);
         //text.setOutlineColor(sf::Color::White);
+#if SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 4)
         text.setFillColor(sf::Color::White);
+#else
+        text.setColor(sf::Color::White);
+#endif
         //text.setOutlineThickness(1.0f);
         //text.setPosition(300, 200);
         auto position = window.getSize();
