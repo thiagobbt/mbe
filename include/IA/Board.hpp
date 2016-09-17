@@ -4,7 +4,13 @@
 #include "Utilities.hpp"
 #include "multimedia/Gomoku.hpp"
 #include "IA/DemoGraphics.hpp"
-#include <iostream>
+
+#ifdef RELEASE
+    #define DBOUT( x )
+#else
+    #include <iostream>
+    #define DBOUT( x )  std::cout << x << std::endl
+#endif
 
 class Board {
     friend class DemoGraphics;
@@ -35,7 +41,7 @@ class Board {
     }
     
     void jogar(int row, int col) {
-    	std::cout << "Board::jogar(" << row << ", " << col << ")" << std::endl;
+    	DBOUT("Board::jogar(" << row << ", " << col << ")");
         board[row][col] = currentPlayer;
         nJogadas++;
         ultimaJogada = {row, col};
@@ -60,33 +66,6 @@ class Board {
             }
     	}
     	return children;
-    }
-
-    gm::Position proximaVazia(gm::Position pos) {
-    	std::cout << "Board::proximaVazia received (" << pos.row << ", " << pos.column << ")" << std::endl;
-    	int position = pos.row*15 + pos.column;
-    	for (int i = position+1; i < 225; i++) {
-    		int row = i / 15;
-    		int col = i % 15;
-    		if (getPosition(row, col) == Casa::VAZIA) {
-    			std::cout << "Board::proximaVazia returned (" << row << ", " << col << ")" << std::endl;
-                return {row, col};
-            }
-    	}
-    	return {-1, -1};
-
-        /*int tmp = pos.column+1;
-        for (int row = pos.row; row < 15; row++) {
-            for (int col = tmp; col < 15; col++) {
-                if (getPosition(row, col) == Casa::VAZIA) {
-                	std::cout << "Board::proximaVazia returned (" << pos.row << ", " << pos.column << ")" << std::endl;
-                    return {row, col};
-                }
-            }
-            tmp = 0;
-        }
-        std::cout << "Board::proximaVazia couldn't find any empty spaces" << std::endl;
-        return {-1, -1};*/
     }
 
     int getNumJogadas() {

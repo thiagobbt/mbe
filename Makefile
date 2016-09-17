@@ -14,7 +14,7 @@ DEPDIR    :=.deps
 # Compiler & linker flags
 LDLIBS    :=-lm -lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS   := 
-CXXFLAGS  :=-std=c++14 -Wall -g
+CXXFLAGS  :=-std=c++14 -Wall -O3 -DRELEASE
 INCLUDE   :=-I$(HDRDIR)
 # Files
 SRC       :=$(shell find $(SRCDIR) -name '*.cpp')
@@ -31,7 +31,7 @@ TSTEXEC   :=$(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%,$(TSTFILE))
 .PHONY: all makedir clean clean_deps clean_all tests run
 
 ################################# MAIN RULES ##################################
-all: makedir $(EXEC)
+all: makedir $(EXEC) Makefile
 
 run: $(EXEC)
 	$(EXEC)
