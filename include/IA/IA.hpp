@@ -24,7 +24,10 @@ class Skynet : public gm::PlayerHandler<Board> {
     int utilidade(Board& board);
     gm::Position doUpdate(Board& board, gm::GameInput& input) override;
 
+    int multiplicadorScore[15][15];
+
  public:
+    Skynet();
     void setCor(Casa c);
 };
 

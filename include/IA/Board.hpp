@@ -35,11 +35,11 @@ class Board {
     }
     
     void jogar(int row, int col) {
+    	std::cout << "Board::jogar(" << row << ", " << col << ")" << std::endl;
         board[row][col] = currentPlayer;
         nJogadas++;
         ultimaJogada = {row, col};
         currentPlayer = getOpponent();
-        std::cout << (int)currentPlayer << std::endl;
     }
 
     void jogar(gm::Position a) {
@@ -50,21 +50,43 @@ class Board {
         return board[row][col];
     }
 
+    std::list<gm::Position> getChildren() {
+    	std::list<gm::Position> children;
+    	for (int i = 0; i < 225; i++) {
+    		int row = i / 15;
+    		int col = i % 15;
+    		if (getPosition(row, col) == Casa::VAZIA) {
+    			children.push_back({row, col});
+            }
+    	}
+    	return children;
+    }
+
     gm::Position proximaVazia(gm::Position pos) {
-        int tmp = pos.column+1;
+    	std::cout << "Board::proximaVazia received (" << pos.row << ", " << pos.column << ")" << std::endl;
+    	int position = pos.row*15 + pos.column;
+    	for (int i = position+1; i < 225; i++) {
+    		int row = i / 15;
+    		int col = i % 15;
+    		if (getPosition(row, col) == Casa::VAZIA) {
+    			std::cout << "Board::proximaVazia returned (" << row << ", " << col << ")" << std::endl;
+                return {row, col};
+            }
+    	}
+    	return {-1, -1};
+
+        /*int tmp = pos.column+1;
         for (int row = pos.row; row < 15; row++) {
-            std::cout << "proximaVazia: row " << row << std::endl;
             for (int col = tmp; col < 15; col++) {
-                std::cout << "proximaVazia: col " << col << std::endl;
                 if (getPosition(row, col) == Casa::VAZIA) {
-                    std::cout << "proximaVazia: returning (" << row << ", " << col << ")" << std::endl;
+                	std::cout << "Board::proximaVazia returned (" << pos.row << ", " << pos.column << ")" << std::endl;
                     return {row, col};
                 }
             }
             tmp = 0;
         }
-
-        return {-1, -1};
+        std::cout << "Board::proximaVazia couldn't find any empty spaces" << std::endl;
+        return {-1, -1};*/
     }
 
     int getNumJogadas() {
