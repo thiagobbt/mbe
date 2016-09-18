@@ -1,13 +1,7 @@
 #ifndef IA_CPP
 #define IA_CPP
 
-#ifdef RELEASE
-    #define DBOUT( x )
-#else
-    #include <iostream>
-    #define DBOUT( x )  std::cout << x << std::endl
-#endif
-
+#include "IA/Utilities.hpp"
 #include "IA/IA.hpp"
 
 Skynet::Skynet() {
@@ -31,8 +25,8 @@ Skynet::Skynet() {
 Skynet::Score Skynet::minimax(Board& board, int level, int alpha, int beta) {
     DBOUT("Skynet::minimax level: " << level);
     // IA é preta
-    Casa cor = board.getCurrentPlayer();
-    DBOUT("Skynet::minimax currentPlayer: " << (int)cor);
+    PlayerType cor = board.getCurrentPlayer();
+    DBOUT("Skynet::minimax currentPlayer: " << cor);
     int score = 0;
     Board novaBoard;
     gm::Position alphaPlay = {-1, -1};
@@ -42,27 +36,27 @@ Skynet::Score Skynet::minimax(Board& board, int level, int alpha, int beta) {
         DBOUT("Skynet::minimax utilidade");
         return {utilidade(board), board.ultimaJogada};
     } else if (level == 0) {
-        DBOUT("Skynet::minimax heuristica " << board.ultimaJogada.row << " " << board.ultimaJogada.column);
+        DBOUT("Skynet::minimax heuristica " << board.ultimaJogada);
         return {heuristica(board), board.ultimaJogada};
     }
 
     std::list<gm::Position> children = board.getChildren();
 
-    if (cor == Casa::BRANCA) {
+    if (cor == PlayerType::PRETA) {
         for (gm::Position child : children) {
             novaBoard = Board(board);
             novaBoard.jogar(child);
             score = minimax(novaBoard, level-1, alpha, beta).score;
             if (score > alpha) {
                 DBOUT("Skynet::minimax " << level << " set alpha to\t" << score
-                       << " on " << novaBoard.ultimaJogada.row << " " << novaBoard.ultimaJogada.column);
+                       << " on " << novaBoard.ultimaJogada);
                 alpha = score;
                 alphaPlay = novaBoard.ultimaJogada;
             }
-            /*if (alpha >= beta) {
-                DBOUT("Skynet::minimax PRETA cut " << novaBoard.ultimaJogada.row << " " << novaBoard.ultimaJogada.column);
+            if (alpha >= beta) {
+                DBOUT("Skynet::minimax PRETA cut " << novaBoard.ultimaJogada);
                 return {0, novaBoard.ultimaJogada};
-            }*/
+            }
         }
         DBOUT("Skynet::minimax returning bs " << alphaPlay.row << " " << alphaPlay.column);
         return {alpha, alphaPlay};
@@ -73,14 +67,14 @@ Skynet::Score Skynet::minimax(Board& board, int level, int alpha, int beta) {
             score = minimax(novaBoard, level-1, alpha, beta).score;
             if (score < beta) {
                 DBOUT("Skynet::minimax " << level << " set beta to\t" << score
-                       << " on " << novaBoard.ultimaJogada.row << " " << novaBoard.ultimaJogada.column);
+                       << " on " << novaBoard.ultimaJogada);
                 beta = score;
                 betaPlay = novaBoard.ultimaJogada;
             }
-            /*if (alpha >= beta) {
-                DBOUT("Skynet::minimax BRANCA cut " << novaBoard.ultimaJogada.row << " " << novaBoard.ultimaJogada.column);
+            if (alpha >= beta) {
+                DBOUT("Skynet::minimax BRANCA cut " << novaBoard.ultimaJogada);
                 return {INT_MIN, novaBoard.ultimaJogada};
-            }*/
+            }
         }
         DBOUT("Skynet::minimax returning bs " << betaPlay.row << " " << alphaPlay.column);
         return {beta, betaPlay};
@@ -91,8 +85,8 @@ Skynet::Score Skynet::minimax(Board& board, int level, int alpha, int beta) {
 
 gm::Position Skynet::minimax_base(Board& board) {
     DBOUT("Skynet::minimax_base");
-    gm::Position pos = minimax(board, 2).position;
-    DBOUT("MINIMAX RETURNED POS(" << pos.row << ", " << pos.column << ")");
+    gm::Position pos = minimax(board, 3).position;
+    DBOUT("MINIMAX RETURNED POS " << pos);
     return pos;
 }
 
@@ -115,6 +109,8 @@ int Skynet::heuristica(Board& board) {
     int score = 0;
 
     score = avaliar(sequencias_f.coluna) + avaliar(sequencias_f.linha) + avaliar(sequencias_f.diag_primaria) + avaliar(sequencias_f.diag_secundaria);
+    int score_a = avaliar(sequencias_a.coluna) + avaliar(sequencias_a.linha) + avaliar(sequencias_a.diag_primaria) + avaliar(sequencias_a.diag_secundaria);
+    score = (score*3 + score_a) / 4;
     score *= multiplicadorScore[board.ultimaJogada.row][board.ultimaJogada.column];
     auto lp = board.ultimaJogada;
     DBOUT("heuristica(" << lp.row << ", " << lp.column << ") = " << score);
@@ -131,7 +127,7 @@ gm::Position Skynet::doUpdate(Board& board, gm::GameInput& input) {
     return minimax_base(board);
 }
 
-void Skynet::setCor(Casa c) {
+void Skynet::setCor(PlayerType c) {
     cor = c;
 }
 

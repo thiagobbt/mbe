@@ -4,7 +4,7 @@
 Board::Board() {
     for (auto& a : board) {
         for (auto& b : a) {
-            b = Casa::VAZIA;
+            b = PlayerType::VAZIA;
         }
     }
 }
@@ -18,12 +18,12 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
 
     int row = pos.row;
     int col = pos.column;
-    Casa cor = getOpponent();
+    PlayerType cor = getOpponent();
 
     for (int curr_col = col-1; curr_col >= std::max(0, curr_col-4-tolerancia); curr_col--) {
         if (board[row][curr_col] == cor) {
             count_linha++;
-        } else if (board[row][curr_col] == Casa::VAZIA) {
+        } else if (board[row][curr_col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -36,7 +36,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
     for (int curr_col = col+1; curr_col <= std::min(14, curr_col+4+tolerancia); curr_col++) {
         if (board[row][curr_col] == cor) {
             count_linha++;
-        } else if (board[row][curr_col] == Casa::VAZIA) {
+        } else if (board[row][curr_col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -51,7 +51,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
     for (int curr_row = row-1; curr_row >= std::max(0, curr_row-4-tolerancia); curr_row--) {
         if (board[curr_row][col] == cor) {
             count_coluna++;
-        } else if (board[curr_row][col] == Casa::VAZIA) {
+        } else if (board[curr_row][col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -64,7 +64,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
     for (int curr_row = row+1; curr_row <= std::min(14, curr_row+4+tolerancia); curr_row++) {
         if (board[curr_row][col] == cor) {
             count_coluna++;
-        } else if (board[curr_row][col] == Casa::VAZIA) {
+        } else if (board[curr_row][col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -82,7 +82,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag1++;
-        } else if (board[curr_row][curr_col] == Casa::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -98,7 +98,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag1++;
-        } else if (board[curr_row][curr_col] == Casa::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -116,7 +116,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag2++;
-        } else if (board[curr_row][curr_col] == Casa::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -132,7 +132,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag2++;
-        } else if (board[curr_row][curr_col] == Casa::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
             pulados++;
             if (pulados > tolerancia) {
                 break;

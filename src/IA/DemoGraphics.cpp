@@ -20,8 +20,8 @@ void DemoGraphics::doUpdate(Demo& demo, gm::Renderer& renderer) {
     for (auto &rowOfStones : stones.board) {
         int y = 0;
         for(auto &stone : rowOfStones) {
-            if (stone != Casa::VAZIA) {
-                sf::Color color = stone == Casa::PRETA ? GMTraits::BLACK_COLOR : GMTraits::WHITE_COLOR;
+            if (stone != PlayerType::VAZIA) {
+                sf::Color color = stone == PlayerType::PRETA ? GMTraits::BLACK_COLOR : GMTraits::WHITE_COLOR;
                 // gm::Stone é uma struct com uma gm::Position ({x, y}) e uma sf::Color
                 drawStone({{x, y}, color}, renderer);
             }

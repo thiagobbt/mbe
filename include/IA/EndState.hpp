@@ -11,19 +11,19 @@ class Demo;
 
 class EndState : public mbe::Game::State {
  public:
-    EndState(Casa cor = Casa::PRETA) : corGanhador(cor){}
+    EndState(PlayerType cor = PlayerType::PRETA) : corGanhador(cor){}
 
  private:
-    Casa corGanhador;
+    PlayerType corGanhador;
 
     void onPeriodicUpdate() override {}
 
     void onUpdateRenderer(Renderer& window) override {
         std::string texto;
 
-        if (corGanhador == Casa::BRANCA) {
+        if (corGanhador == PlayerType::BRANCA) {
             texto = "Branco ganhou!";
-        } else if (corGanhador == Casa::PRETA) {
+        } else if (corGanhador == PlayerType::PRETA) {
             texto = "Preto ganhou!";
         } else {
             texto = "Empate!";

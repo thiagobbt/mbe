@@ -52,7 +52,10 @@ namespace gm {
         return !(lhs == rhs);
     }
 
-
+    inline std::ostream& operator<<(std::ostream& stream, const Position& p) {
+        stream << "{" << p.row << ", " << p.column << "}";
+        return stream;
+    }
 }
 
 #include "Gomoku.ipp"

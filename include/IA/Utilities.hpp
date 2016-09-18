@@ -1,7 +1,16 @@
 #ifndef UTILITIES_HPP
 #define UTILITIES_HPP
 
-enum class Casa {
+#ifdef RELEASE
+    #define DBOUT( x )
+#else
+    #include <iostream>
+    #define DBOUT( x )  std::cout << x << std::endl
+#endif
+
+#include <ostream>
+
+enum class PlayerType {
     VAZIA,
     BRANCA,
     PRETA
@@ -13,6 +22,21 @@ enum class Direction {
     SW, S, SE
 };
 
-// using Board = Casa[15][15];
+inline std::ostream& operator<<(std::ostream& stream, const PlayerType& p) {
+	switch (p) {
+		case PlayerType::BRANCA:
+			stream << "B";
+			break;
+		case PlayerType::PRETA:
+			stream << "P";
+			break;
+		default:
+			stream << "V";
+			break;
+	}
+	return stream;
+};
+
+// using Board = PlayerType[15][15];
 
 #endif // UTILITIES_HPP

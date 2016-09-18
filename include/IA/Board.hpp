@@ -5,18 +5,11 @@
 #include "multimedia/Gomoku.hpp"
 #include "IA/DemoGraphics.hpp"
 
-#ifdef RELEASE
-    #define DBOUT( x )
-#else
-    #include <iostream>
-    #define DBOUT( x )  std::cout << x << std::endl
-#endif
-
 class Board {
     friend class DemoGraphics;
  private:
-    Casa board[15][15];
-    Casa currentPlayer = Casa::BRANCA;
+    PlayerType board[15][15];
+    PlayerType currentPlayer = PlayerType::BRANCA;
     int nJogadas = 0;
  public:
     struct Sequencias {
@@ -32,12 +25,12 @@ class Board {
     Sequencias detectarSequencias(gm::Position pos, int tolerancia);
     bool detectaFimDeJogo(gm::Position pos);
 
-    Casa getCurrentPlayer() {
+    PlayerType getCurrentPlayer() {
         return currentPlayer;
     }
 
-    Casa getOpponent() {
-        return ((currentPlayer == Casa::BRANCA)? Casa::PRETA : Casa::BRANCA);
+    PlayerType getOpponent() {
+        return ((currentPlayer == PlayerType::BRANCA)? PlayerType::PRETA : PlayerType::BRANCA);
     }
     
     void jogar(int row, int col) {
@@ -46,13 +39,14 @@ class Board {
         nJogadas++;
         ultimaJogada = {row, col};
         currentPlayer = getOpponent();
+        DBOUT(*this);
     }
 
     void jogar(gm::Position a) {
         jogar(a.row, a.column);
     }
 
-    Casa getPosition(int row, int col) {
+    PlayerType getPosition(int row, int col) {
         return board[row][col];
     }
 
@@ -61,7 +55,7 @@ class Board {
     	for (int i = 0; i < 225; i++) {
     		int row = i / 15;
     		int col = i % 15;
-    		if (getPosition(row, col) == Casa::VAZIA) {
+    		if (getPosition(row, col) == PlayerType::VAZIA) {
     			children.push_back({row, col});
             }
     	}
@@ -70,6 +64,16 @@ class Board {
 
     int getNumJogadas() {
         return nJogadas;
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, const Board& b) {
+        for (int i = 0; i < 15; ++i) {
+            for (int j = 0; j < 15; ++j) {
+                stream << b.board[i][j] << ' ';
+            }
+            if (i < 14) stream << std::endl;
+        }
+        return stream;
     }
 };
 

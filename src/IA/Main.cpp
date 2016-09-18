@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv) {
     auto *ia = new Skynet();
-    ia->setCor(Casa::PRETA);
+    ia->setCor(PlayerType::PRETA);
     auto *gameState = new Demo(DemoPlayer(), DemoPlayer(ia));
     auto *game = new mbe::Game(gameState);
 

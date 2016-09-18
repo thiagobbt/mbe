@@ -8,7 +8,7 @@
 
 class Skynet : public gm::PlayerHandler<Board> {
  private:
-    Casa cor;
+    PlayerType cor;
 
     struct Score {
         int score;
@@ -28,7 +28,7 @@ class Skynet : public gm::PlayerHandler<Board> {
 
  public:
     Skynet();
-    void setCor(Casa c);
+    void setCor(PlayerType c);
 };
 
 #endif // IA_HPP
