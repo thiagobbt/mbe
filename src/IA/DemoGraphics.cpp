@@ -14,19 +14,15 @@ void DemoGraphics::doUpdate(Demo& demo, gm::Renderer& renderer) {
     // Desenhamos o tabuleiro
     drawBoard(renderer);
     // Pegamos o tabuleiro
-    auto &stones = demo.getBoard();
-    // Loop grotesco para descobrir onde estão as pedras e desenhá-las
-    int x = 0;
-    for (auto &rowOfStones : stones.board) {
-        int y = 0;
-        for(auto &stone : rowOfStones) {
-            if (stone != PlayerType::VAZIA) {
-                sf::Color color = stone == PlayerType::PRETA ? GMTraits::BLACK_COLOR : GMTraits::WHITE_COLOR;
+    Board stones = demo.getBoard();
+    for (int i = 0; i < 15; i++) {
+        for(int j = 0; j < 15; j++) {
+            auto stone = stones.getPosition({i, j});
+            if (stone != PlayerType::EMPTY) {
+                sf::Color color = stone == PlayerType::BLACK ? GMTraits::BLACK_COLOR : GMTraits::WHITE_COLOR;
                 // gm::Stone é uma struct com uma gm::Position ({x, y}) e uma sf::Color
-                drawStone({{x, y}, color}, renderer);
+                drawStone({{i, j}, color}, renderer);
             }
-            y++;
         }
-        x++;
     }
 }

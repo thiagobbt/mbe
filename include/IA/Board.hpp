@@ -5,74 +5,64 @@
 #include "multimedia/Gomoku.hpp"
 #include "IA/DemoGraphics.hpp"
 
+#include <list>
+
 class Board {
-    friend class DemoGraphics;
- private:
+private:
     PlayerType board[15][15];
-    PlayerType currentPlayer = PlayerType::BRANCA;
-    int nJogadas = 0;
- public:
+    PlayerType currentPlayer = PlayerType::WHITE;
+    uint numPlays = 0;
+    bool gameEnded = false;
+    gm::Position lastPlay = {-1, -1};
+
+public:
     struct Sequencias {
         int coluna = 0;
         int linha = 0;
         int diag_primaria = 0;
         int diag_secundaria = 0;
+
+        Sequencias(int c, int l, int d1, int d2)
+        : coluna(c), linha(l), diag_primaria(d1), diag_secundaria(d2) {}
     };
 
-    bool gameFinished = false;
-    gm::Position ultimaJogada;
-    Board();
+    PlayerType getPosition(gm::Position pos);
+    PlayerType getOpponent();
+    PlayerType getCurrentPlayer();
+    gm::Position getLastPlay();
+    uint getNumPlays();
+    std::list<gm::Position> getChildren();
+    bool isGameEnded();
     Sequencias detectarSequencias(gm::Position pos, int tolerancia);
-    bool detectaFimDeJogo(gm::Position pos);
-
-    PlayerType getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    PlayerType getOpponent() {
-        return ((currentPlayer == PlayerType::BRANCA)? PlayerType::PRETA : PlayerType::BRANCA);
-    }
-    
-    void jogar(int row, int col) {
-    	DBOUT("Board::jogar(" << row << ", " << col << ")");
-        board[row][col] = currentPlayer;
-        nJogadas++;
-        ultimaJogada = {row, col};
-        currentPlayer = getOpponent();
-        DBOUT(*this);
-    }
-
-    void jogar(gm::Position a) {
-        jogar(a.row, a.column);
-    }
-
-    PlayerType getPosition(int row, int col) {
-        return board[row][col];
-    }
-
-    std::list<gm::Position> getChildren() {
-    	std::list<gm::Position> children;
-    	for (int i = 0; i < 225; i++) {
-    		int row = i / 15;
-    		int col = i % 15;
-    		if (getPosition(row, col) == PlayerType::VAZIA) {
-    			children.push_back({row, col});
-            }
-    	}
-    	return children;
-    }
-
-    int getNumJogadas() {
-        return nJogadas;
-    }
+    bool checkGameEnded(gm::Position pos);
+    bool play(gm::Position pos, bool debug = true);
 
     friend std::ostream& operator<<(std::ostream& stream, const Board& b) {
+        stream << "gameEnded: " << b.gameEnded << std::endl;
+        stream << std::hex;
         for (int i = 0; i < 15; ++i) {
+            if (i == 0) {
+                for (int j = 0; j < 15; ++j) {
+                    if (j == 0) stream << "  ";
+                    stream << j << ' ';
+                }
+                stream << std::endl;
+            }
             for (int j = 0; j < 15; ++j) {
+                if (j == 0) stream << i << " ";
                 stream << b.board[i][j] << ' ';
             }
             if (i < 14) stream << std::endl;
         }
+        stream << std::dec;
+        return stream;
+    }
+
+    friend std::ostream& operator<<(std::ostream& stream, const Sequencias& s) {
+        stream << "co: " << s.coluna << std::endl;
+        stream << "li: " << s.linha << std::endl;
+        stream << "d1: " << s.diag_primaria << std::endl;
+        stream << "d2: " << s.diag_secundaria << std::endl;
         return stream;
     }
 };

@@ -11,7 +11,7 @@ class Demo;
 
 class EndState : public mbe::Game::State {
  public:
-    EndState(PlayerType cor = PlayerType::PRETA) : corGanhador(cor){}
+    EndState(PlayerType cor = PlayerType::BLACK) : corGanhador(cor){}
 
  private:
     PlayerType corGanhador;
@@ -21,32 +21,32 @@ class EndState : public mbe::Game::State {
     void onUpdateRenderer(Renderer& window) override {
         std::string texto;
 
-        if (corGanhador == PlayerType::BRANCA) {
-            texto = "Branco ganhou!";
-        } else if (corGanhador == PlayerType::PRETA) {
-            texto = "Preto ganhou!";
+        if (corGanhador == PlayerType::WHITE) {
+            texto = "White wins!";
+        } else if (corGanhador == PlayerType::BLACK) {
+            texto = "Black wins!";
         } else {
-            texto = "Empate!";
+            texto = "Draw!";
         }
 
         // Declare and load a font
         sf::Font font;
-        font.loadFromFile("arial.ttf");
+        font.loadFromFile("visitor1.ttf");
         // Create a text
         sf::Text text(texto, font);
-        text.setCharacterSize(30);
-        text.setStyle(sf::Text::Bold);
+        text.setCharacterSize(40);
+        //text.setStyle(sf::Text::Bold);
         //text.setOutlineColor(sf::Color::White);
 #if SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 4)
         text.setFillColor(sf::Color::White);
 #else
         text.setColor(sf::Color::White);
 #endif
-        //text.setOutlineThickness(1.0f);
-        //text.setPosition(300, 200);
         auto position = window.getSize();
-        text.setPosition(sf::Vector2f(position.x/2 - text.getGlobalBounds().width / 2, position.y/2));
-        window.clear(sf::Color::Black);
+        //text.setPosition(sf::Vector2f(position.x/2 - text.getGlobalBounds().width / 2, position.y/2));
+
+        text.setPosition(sf::Vector2f(position.x - text.getGlobalBounds().width - 30, position.y/2));
+        //window.clear(sf::Color::Black);
 
         // Desenha
         window.draw(text);

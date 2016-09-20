@@ -1,15 +1,44 @@
 #include "IA/Board.hpp"
-#include <algorithm>
 
-Board::Board() {
-    for (auto& a : board) {
-        for (auto& b : a) {
-            b = PlayerType::VAZIA;
+PlayerType Board::getPosition(gm::Position pos) {
+    return board[pos.row][pos.column];
+}
+
+PlayerType Board::getOpponent() {
+    return currentPlayer == PlayerType::WHITE? PlayerType::BLACK : PlayerType::WHITE;
+}
+
+PlayerType Board::getCurrentPlayer() {
+    return currentPlayer;
+}
+
+gm::Position Board::getLastPlay() {
+    return lastPlay;
+}
+
+uint Board::getNumPlays() {
+    return numPlays;
+}
+
+std::list<gm::Position> Board::getChildren() {
+    std::list<gm::Position> children;
+    for (int i = 0; i < 225; i++) {
+        int row = i / 15;
+        int col = i % 15;
+        if (getPosition({row, col}) == PlayerType::EMPTY) {
+            children.push_back({row, col});
         }
     }
+    return children;
+}
+
+bool Board::isGameEnded() {
+    return gameEnded;
 }
 
 Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
+    PlayerType cor = getPosition(pos);
+
     int count_linha = 1;
     int count_coluna = 1;
     int count_diag1 = 1;
@@ -18,12 +47,11 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
 
     int row = pos.row;
     int col = pos.column;
-    PlayerType cor = getOpponent();
 
     for (int curr_col = col-1; curr_col >= std::max(0, curr_col-4-tolerancia); curr_col--) {
         if (board[row][curr_col] == cor) {
             count_linha++;
-        } else if (board[row][curr_col] == PlayerType::VAZIA) {
+        } else if (board[row][curr_col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -36,7 +64,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
     for (int curr_col = col+1; curr_col <= std::min(14, curr_col+4+tolerancia); curr_col++) {
         if (board[row][curr_col] == cor) {
             count_linha++;
-        } else if (board[row][curr_col] == PlayerType::VAZIA) {
+        } else if (board[row][curr_col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -51,7 +79,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
     for (int curr_row = row-1; curr_row >= std::max(0, curr_row-4-tolerancia); curr_row--) {
         if (board[curr_row][col] == cor) {
             count_coluna++;
-        } else if (board[curr_row][col] == PlayerType::VAZIA) {
+        } else if (board[curr_row][col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -64,7 +92,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
     for (int curr_row = row+1; curr_row <= std::min(14, curr_row+4+tolerancia); curr_row++) {
         if (board[curr_row][col] == cor) {
             count_coluna++;
-        } else if (board[curr_row][col] == PlayerType::VAZIA) {
+        } else if (board[curr_row][col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -82,7 +110,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag1++;
-        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -98,7 +126,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag1++;
-        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -116,7 +144,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag2++;
-        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -132,7 +160,7 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
         
         if (board[curr_row][curr_col] == cor) {
             count_diag2++;
-        } else if (board[curr_row][curr_col] == PlayerType::VAZIA) {
+        } else if (board[curr_row][curr_col] == PlayerType::EMPTY) {
             pulados++;
             if (pulados > tolerancia) {
                 break;
@@ -145,13 +173,40 @@ Board::Sequencias Board::detectarSequencias(gm::Position pos, int tolerancia) {
     return {count_coluna, count_linha, count_diag1, count_diag2};
 }
 
-bool Board::detectaFimDeJogo(gm::Position pos) {
+bool Board::checkGameEnded(gm::Position pos) {
+    if (numPlays == 225) return true;
+
     Sequencias seq = detectarSequencias(pos, 0);
     int maxTamSeq = std::max(std::max(seq.coluna, seq.linha), std::max(seq.diag_primaria, seq.diag_secundaria));
 
     if (maxTamSeq >= 5) {
-        gameFinished = true;
         return true;
     }
+
     return false;
+}
+
+bool Board::play(gm::Position pos, bool debug) {
+    if (pos.row < 0 || pos.row > 14 || pos.column < 0 || pos.column > 14) {
+        std::cout<<"Board::play " << currentPlayer << " " << pos << " error is not in bounds"<<std::endl;
+        return false;
+    }
+
+    if (getPosition(pos) != PlayerType::EMPTY) {
+        std::cout<<"Board::play " << currentPlayer << " " << pos << " error is not VAZIA"<<std::endl;
+        return false;
+    }
+
+    if (gameEnded) {
+        std::cout<<"Board::play " << currentPlayer << " " << pos << " error game is ended"<<std::endl;
+        return false;
+    }
+
+    numPlays++;
+    lastPlay = pos;
+    board[pos.row][pos.column] = currentPlayer;
+    gameEnded = checkGameEnded(lastPlay);
+    currentPlayer = getOpponent();
+
+    return true;
 }
