@@ -5,7 +5,7 @@
 #include "multimedia/Gomoku.hpp"
 #include "IA/DemoGraphics.hpp"
 
-#include <list>
+#include <unordered_set>
 
 class Board {
 private:
@@ -14,6 +14,7 @@ private:
     uint numPlays = 0;
     bool gameEnded = false;
     gm::Position lastPlay = {-1, -1};
+    std::list<gm::Position> plays;
 
 public:
     struct Sequencias {
@@ -31,7 +32,7 @@ public:
     PlayerType getCurrentPlayer();
     gm::Position getLastPlay();
     uint getNumPlays();
-    std::list<gm::Position> getChildren();
+    std::unordered_set<gm::Position> getChildren();
     bool isGameEnded();
     Sequencias detectarSequencias(gm::Position pos, int tolerancia);
     bool checkGameEnded(gm::Position pos);

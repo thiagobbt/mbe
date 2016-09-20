@@ -20,13 +20,48 @@ uint Board::getNumPlays() {
     return numPlays;
 }
 
-std::list<gm::Position> Board::getChildren() {
+std::unordered_set<gm::Position> getAdjacent(gm::Position p) {
+    std::unordered_set<gm::Position> adjacent;
+    if (p.row > 0 ) {
+        if (p.column > 0) adjacent.insert({p.row-1, p.column-1});
+        adjacent.insert({p.row-1, p.column});
+        if (p.column < 14) adjacent.insert({p.row-1, p.column+1});
+    }
+
+    if (p.column > 0) adjacent.insert({p.row, p.column-1});
+    if (p.column < 14) adjacent.insert({p.row, p.column+1});
+
+    if (p.row < 14) {
+        if (p.column > 0) adjacent.insert({p.row+1, p.column-1});
+        adjacent.insert({p.row+1, p.column});
+        if (p.column < 14) adjacent.insert({p.row+1, p.column+1});
+    }
+
+    return adjacent;
+}
+
+std::unordered_set<gm::Position> Board::getChildren() {
+    /*
     std::list<gm::Position> children;
     for (int i = 0; i < 225; i++) {
         int row = i / 15;
         int col = i % 15;
         if (getPosition({row, col}) == PlayerType::EMPTY) {
             children.push_back({row, col});
+        }
+    }*/
+
+    std::unordered_set<gm::Position> children;
+
+    if (plays.size() == 0) {
+        children.insert({7, 7});
+        return children;
+    }
+
+    for (auto play : plays) {
+        for (auto p : getAdjacent(play)) {
+            if (getPosition(p) == PlayerType::EMPTY)
+                children.insert(p);
         }
     }
     return children;
@@ -204,6 +239,7 @@ bool Board::play(gm::Position pos, bool debug) {
 
     numPlays++;
     lastPlay = pos;
+    plays.push_back(pos);
     board[pos.row][pos.column] = currentPlayer;
     gameEnded = checkGameEnded(lastPlay);
     currentPlayer = getOpponent();

@@ -60,6 +60,18 @@ namespace gm {
     }
 }
 
+namespace std
+{
+    template <>
+    struct hash<gm::Position>
+    {
+        size_t operator()( const gm::Position& k ) const
+        {
+            return k.row * 15 + k.column;
+        }
+    };
+}
+
 #include "Gomoku.ipp"
 
 #endif /* MTM_GOMOKU_BOARD_HPP */

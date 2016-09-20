@@ -2,6 +2,7 @@
 #define IA_CPP
 
 #include "IA/IA.hpp"
+#include <unordered_set>
 
 int Skynet::utility(PlayerType player, Board& board) {
     if (!board.isGameEnded()) {
@@ -62,7 +63,7 @@ int Skynet::minimax(PlayerType player, Board& board, int level, int alpha, int b
         return heuristic(player, board);
     }
 
-    std::list<gm::Position> children = board.getChildren();
+    std::unordered_set<gm::Position> children = board.getChildren();
 
     if (board.getCurrentPlayer() == player) {
         // MAX
@@ -97,7 +98,7 @@ gm::Position Skynet::minimax_base(Board& board) {
 
     PlayerType player = board.getCurrentPlayer();
 
-    std::list<gm::Position> children = board.getChildren();
+    std::unordered_set<gm::Position> children = board.getChildren();
     int bestScore = INT_MIN;
     gm::Position bestPosition = {-1, -1};
 
@@ -105,7 +106,7 @@ gm::Position Skynet::minimax_base(Board& board) {
         iterations++;
         Board childBoard = Board(board);
         childBoard.play(*child);
-        int score = minimax(player, childBoard, 3, bestScore);
+        int score = minimax(player, childBoard, 4, bestScore);
         if (score > bestScore) {
             bestScore = score;
             bestPosition = *child;
