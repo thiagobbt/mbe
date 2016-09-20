@@ -59,6 +59,26 @@ void gm::Graphics<G>::drawLastPlay(Position pos, Renderer& window) const {
 }
 
 template<typename G>
+void gm::Graphics<G>::drawQuitMessage(Renderer& window) const {
+    std::string title_str = "Press Q to\nexit to\nthe main menu";
+    sf::Font font;
+    font.loadFromFile("visitor1.ttf");
+    sf::Text title_txt(title_str, font);
+    title_txt.setCharacterSize(30);
+    title_txt.setStyle(sf::Text::Bold);
+
+#if SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 4)
+    title_txt.setFillColor(sf::Color::White);
+#else
+    title_txt.setColor(sf::Color::White);
+#endif
+    auto position = window.getSize();
+    title_txt.setPosition(sf::Vector2f(position.x - title_txt.getGlobalBounds().width - 30, position.y - title_txt.getGlobalBounds().height - 30));
+
+    window.draw(title_txt);
+}
+
+template<typename G>
 void gm::Graphics<G>::drawBoard(Renderer& window) const {
     static std::vector<sf::Vertex> lines;
     auto boardDimension = GomokuTraits::BOARD_DIMENSION;

@@ -10,6 +10,10 @@ mbe::Game::State::Transition MainMenuState::onProcessInput(Input& input) {
         if (event.type == sf::Event::MouseButtonPressed) {
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
+            /*
+            std::cout << x << ", " << y << std::endl;
+            return {Transition::Type::SELF, this};
+            */
             if (x >= 340 && x <= 650) {
                 if (y >= 250 && y <= 290) {
                     return {Transition::Type::STORE, new Demo(DemoPlayer(), DemoPlayer(new Skynet()))};
@@ -19,19 +23,23 @@ mbe::Game::State::Transition MainMenuState::onProcessInput(Input& input) {
                     return {Transition::Type::STORE, new Demo(DemoPlayer(), DemoPlayer())};    
                 } else if (y >= 390 && y <= 420) {
                     return {Transition::Type::STORE, new Demo(DemoPlayer(new Skynet()), DemoPlayer(new Skynet()))};
+                } else if (y >= 430 && y <= 460) {
+                    return {Transition::Type::CLOSE, nullptr};
                 }
             }
 
             //return {Transition::Type::STORE, new Demo(DemoPlayer(), DemoPlayer(new Skynet()))};
         } else if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Num1) 
+            if (event.key.code == sf::Keyboard::Num1)
                 return {Transition::Type::STORE, new Demo(DemoPlayer(), DemoPlayer(new Skynet()))};
-            else if (event.key.code == sf::Keyboard::Num2) 
+            else if (event.key.code == sf::Keyboard::Num2)
                 return {Transition::Type::STORE, new Demo(DemoPlayer(new Skynet()), DemoPlayer())};
-            else if (event.key.code == sf::Keyboard::Num3) 
+            else if (event.key.code == sf::Keyboard::Num3)
                 return {Transition::Type::STORE, new Demo(DemoPlayer(), DemoPlayer())};
-            else if (event.key.code == sf::Keyboard::Num4) 
+            else if (event.key.code == sf::Keyboard::Num4)
                 return {Transition::Type::STORE, new Demo(DemoPlayer(new Skynet()), DemoPlayer(new Skynet()))};
+            else if (event.key.code == sf::Keyboard::Q)
+                return {Transition::Type::CLOSE, nullptr};
         }
     }
     return {Transition::Type::SELF, this};

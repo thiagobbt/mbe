@@ -3,6 +3,12 @@
 #include "IA/EndState.hpp"
 
 mbe::Game::State::Transition Demo::onProcessInput(Input& input) {
+    for (auto event : input) {
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q) {
+            return {Transition::Type::RESTORE, nullptr};
+        }
+    }
+
     auto move = players[currentPlayer].processInput(board, input);
     // Jogadas fora do tabuleiro são respondidas com -1, -1
     if (move != gm::Position{-1, -1}) {

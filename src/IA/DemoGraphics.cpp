@@ -26,4 +26,5 @@ void DemoGraphics::doUpdate(Demo& demo, gm::Renderer& renderer) {
         }
     }
     drawLastPlay(board.getLastPlay(), renderer);
+    drawQuitMessage(renderer);
 }

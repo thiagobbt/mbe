@@ -12,11 +12,12 @@ class MainMenuState : public mbe::Game::State {
     void onPeriodicUpdate() override {}
 
     void onUpdateRenderer(Renderer& window) override {
-        std::string title_str = "Select a mode: ";
+        std::string title_str = "Select an option: ";
         std::string mode1_str = "[1] Player vs AI";
         std::string mode2_str = "[2] AI vs Player";
         std::string mode3_str = "[3] Player vs Player";
         std::string mode4_str = "[4] AI vs AI";
+        std::string mode5_str = "[Q] Exit";
 
         // Declare and load a font
         sf::Font font;
@@ -28,6 +29,7 @@ class MainMenuState : public mbe::Game::State {
         sf::Text mode2(mode2_str, font);
         sf::Text mode3(mode3_str, font);
         sf::Text mode4(mode4_str, font);
+        sf::Text mode5(mode5_str, font);
 
 
         title.setCharacterSize(30);
@@ -35,12 +37,14 @@ class MainMenuState : public mbe::Game::State {
         mode2.setCharacterSize(30);
         mode3.setCharacterSize(30);
         mode4.setCharacterSize(30);
+        mode5.setCharacterSize(30);
 
         title.setStyle(sf::Text::Bold);
         mode1.setStyle(sf::Text::Bold);
         mode2.setStyle(sf::Text::Bold);
         mode3.setStyle(sf::Text::Bold);
         mode4.setStyle(sf::Text::Bold);
+        mode5.setStyle(sf::Text::Bold);
 
 #if SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 4)
         title.setFillColor(sf::Color::White);
@@ -48,12 +52,14 @@ class MainMenuState : public mbe::Game::State {
         mode2.setFillColor(sf::Color::White);
         mode3.setFillColor(sf::Color::White);
         mode4.setFillColor(sf::Color::White);
+        mode5.setFillColor(sf::Color::White);
 #else
         title.setColor(sf::Color::White);
         mode1.setColor(sf::Color::White);
         mode2.setColor(sf::Color::White);
         mode3.setColor(sf::Color::White);
         mode4.setColor(sf::Color::White);
+        mode5.setColor(sf::Color::White);
 #endif
         //title.setOutlineThickness(1.0f);
         //title.setPosition(300, 200);
@@ -66,6 +72,7 @@ class MainMenuState : public mbe::Game::State {
         mode2.setPosition(sf::Vector2f(350, 200 + 2*(height + 30)));
         mode3.setPosition(sf::Vector2f(350, 200 + 3*(height + 30)));
         mode4.setPosition(sf::Vector2f(350, 200 + 4*(height + 30)));
+        mode5.setPosition(sf::Vector2f(350, 200 + 5*(height + 30)));
         
 
         window.clear(sf::Color::Black);
@@ -75,6 +82,7 @@ class MainMenuState : public mbe::Game::State {
         window.draw(mode2);
         window.draw(mode3);
         window.draw(mode4);
+        window.draw(mode5);
     }
 
     Transition onProcessInput(Input& input) override;
