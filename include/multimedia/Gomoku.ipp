@@ -28,6 +28,7 @@ void gm::Graphics<G>::drawStone(const Stone& stone, Renderer& window) const {
 
 template<typename G>
 void gm::Graphics<G>::drawLastPlay(Position pos, Renderer& window) const {
+    std::string title_str = "Last play:";
     std::string pos_str = "(";
     pos_str += std::to_string(pos.row);
     pos_str += ", ";
@@ -36,17 +37,24 @@ void gm::Graphics<G>::drawLastPlay(Position pos, Renderer& window) const {
     sf::Font font;
     font.loadFromFile("visitor1.ttf");
     sf::Text pos_txt(pos_str, font);
+    sf::Text title_txt(title_str, font);
     pos_txt.setCharacterSize(30);
+    title_txt.setCharacterSize(30);
     pos_txt.setStyle(sf::Text::Bold);
+    title_txt.setStyle(sf::Text::Bold);
 
 #if SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 4)
+    title_txt.setFillColor(sf::Color::White);
     pos_txt.setFillColor(sf::Color::White);
 #else
+    title_txt.setColor(sf::Color::White);
     pos_txt.setColor(sf::Color::White);
 #endif
     auto position = window.getSize();
-    pos_txt.setPosition(sf::Vector2f(position.x - pos_txt.getGlobalBounds().width - 30, 50));
+    title_txt.setPosition(sf::Vector2f(position.x - title_txt.getGlobalBounds().width - 30, 50));
+    pos_txt.setPosition(sf::Vector2f(position.x - pos_txt.getGlobalBounds().width - 30, 60 + title_txt.getGlobalBounds().height));
 
+    window.draw(title_txt);
     window.draw(pos_txt);
 }
 

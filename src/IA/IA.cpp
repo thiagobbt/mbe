@@ -53,6 +53,7 @@ int Skynet::heuristic(PlayerType player, Board& board) {
 };
 
 int Skynet::minimax(PlayerType player, Board& board, int level, int alpha, int beta) {
+    iterations++;
     if (board.checkGameEnded(board.getLastPlay())) {
         return utility(player, board);
     }
@@ -92,6 +93,7 @@ int Skynet::minimax(PlayerType player, Board& board, int level, int alpha, int b
 }
 
 gm::Position Skynet::minimax_base(Board& board) {
+    iterations = 0;
 
     PlayerType player = board.getCurrentPlayer();
 
@@ -99,15 +101,18 @@ gm::Position Skynet::minimax_base(Board& board) {
     int bestScore = INT_MIN;
     gm::Position bestPosition = {-1, -1};
 
-        for (auto child = children.begin(); child != children.end(); child++) {
-            Board childBoard = Board(board);
-            childBoard.play(*child);
-            int score = minimax(player, childBoard, 3, bestScore);
-            if (score > bestScore) {
-                bestScore = score;
-                bestPosition = *child;
-            }
+    for (auto child = children.begin(); child != children.end(); child++) {
+        iterations++;
+        Board childBoard = Board(board);
+        childBoard.play(*child);
+        int score = minimax(player, childBoard, 3, bestScore);
+        if (score > bestScore) {
+            bestScore = score;
+            bestPosition = *child;
         }
+    }
+
+    std::cout << "Skynet::minimax_base iterations: " << iterations << std::endl;
 
     return bestPosition;
 }

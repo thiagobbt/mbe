@@ -16,6 +16,7 @@ class Skynet : public gm::PlayerHandler<Board> {
     gm::Position doUpdate(Board& board, gm::GameInput& input) override;
 
     int scoreMultiplier[15][15];
+    int iterations = 0;
 };
 
 #endif // IA_HPP

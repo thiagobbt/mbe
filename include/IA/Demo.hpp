@@ -24,9 +24,11 @@ class Demo : public mbe::Game::State {
     std::array<DemoPlayer, 2> players;
     short currentPlayer = 0;
     Board board;
+    Renderer* lastWindow;
 
     // Agora nosso onUpdateRenderer chama o update de graphics
     void onUpdateRenderer(Renderer& window) override {
+        lastWindow = &window;
         graphics.update(*this, window);
     }
 

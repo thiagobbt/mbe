@@ -13,14 +13,15 @@ mbe::Game::State::Transition Demo::onProcessInput(Input& input) {
 
             bool jogadorGanhou = board.checkGameEnded(move);
 
-            if (jogadorGanhou) {   
-                std::cout << "End of game. Player " << currentPlayer << " won!" << std::endl;
-                return {Transition::Type::REPLACE, new EndState(static_cast<PlayerType>(currentPlayer+1))};
-            } else if (board.getNumPlays() >= 225) {
+            if (board.getNumPlays() >= 225) {
                 std::cout << "End of game. Draw!" << std::endl;
+                graphics.update(*this, *lastWindow);
                 return {Transition::Type::REPLACE, new EndState(PlayerType::EMPTY)};
+            } else if (jogadorGanhou) {
+                std::cout << "End of game. Player " << currentPlayer << " won!" << std::endl;
+                graphics.update(*this, *lastWindow);
+                return {Transition::Type::REPLACE, new EndState(static_cast<PlayerType>(currentPlayer+1))};
             }
-
             // Troca o current player
             currentPlayer = 1 - currentPlayer;
         }
