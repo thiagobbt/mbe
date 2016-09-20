@@ -27,6 +27,30 @@ void gm::Graphics<G>::drawStone(const Stone& stone, Renderer& window) const {
 }
 
 template<typename G>
+void gm::Graphics<G>::drawLastPlay(Position pos, Renderer& window) const {
+    std::string pos_str = "(";
+    pos_str += std::to_string(pos.row);
+    pos_str += ", ";
+    pos_str += std::to_string(pos.column);
+    pos_str += ")";
+    sf::Font font;
+    font.loadFromFile("visitor1.ttf");
+    sf::Text pos_txt(pos_str, font);
+    pos_txt.setCharacterSize(30);
+    pos_txt.setStyle(sf::Text::Bold);
+
+#if SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 4)
+    pos_txt.setFillColor(sf::Color::White);
+#else
+    pos_txt.setColor(sf::Color::White);
+#endif
+    auto position = window.getSize();
+    pos_txt.setPosition(sf::Vector2f(position.x - pos_txt.getGlobalBounds().width - 30, 50));
+
+    window.draw(pos_txt);
+}
+
+template<typename G>
 void gm::Graphics<G>::drawBoard(Renderer& window) const {
     static std::vector<sf::Vertex> lines;
     auto boardDimension = GomokuTraits::BOARD_DIMENSION;

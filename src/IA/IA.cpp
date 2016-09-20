@@ -95,36 +95,19 @@ gm::Position Skynet::minimax_base(Board& board) {
 
     PlayerType player = board.getCurrentPlayer();
 
-    int scores[15][15] = {{0}};
-
     std::list<gm::Position> children = board.getChildren();
     int bestScore = INT_MIN;
     gm::Position bestPosition = {-1, -1};
 
-#ifdef USE_OMP
-    #pragma omp parallel
-    #pragma omp single
-    {
-#endif
         for (auto child = children.begin(); child != children.end(); child++) {
-#ifdef USE_OMP
-            #pragma omp task firstprivate(child) shared(bestScore) shared(bestPosition) shared(scores)
-            {
-#endif
-                Board childBoard = Board(board);
-                childBoard.play(*child);
-                int score = minimax(player, childBoard, 3);
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestPosition = *child;
-                    scores[(*child).row][(*child).column] = score;
-                }
+            Board childBoard = Board(board);
+            childBoard.play(*child);
+            int score = minimax(player, childBoard, 3, bestScore);
+            if (score > bestScore) {
+                bestScore = score;
+                bestPosition = *child;
             }
-#ifdef USE_OMP
         }
-    }
-    #pragma omp taskwait
-#endif
 
     return bestPosition;
 }

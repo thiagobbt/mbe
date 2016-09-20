@@ -13,8 +13,8 @@ TESTDIR   :=tests
 DEPDIR    :=.deps
 # Compiler & linker flags
 LDLIBS    :=-lm -lsfml-graphics -lsfml-window -lsfml-system
-LDFLAGS   :=-fopenmp
-CXXFLAGS  :=-std=c++14 -Wall -O3 -fopenmp -DUSE_OMP
+LDFLAGS   :=
+CXXFLAGS  :=-std=c++14 -Wall -O3
 INCLUDE   :=-I$(HDRDIR)
 # Files
 SRC       :=$(shell find $(SRCDIR) -name '*.cpp')
@@ -34,7 +34,7 @@ TSTEXEC   :=$(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%,$(TSTFILE))
 ################################# MAIN RULES ##################################
 all: makedir $(EXEC) Makefile
 
-run: $(EXEC)
+run: $(BINDIR) $(EXEC)
 	$(EXEC)
 
 $(EXEC): $(OBJ)

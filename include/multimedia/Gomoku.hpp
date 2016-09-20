@@ -33,6 +33,7 @@ namespace gm {
      protected:
         void drawStone(const Stone&, Renderer&) const;
         void drawBoard(Renderer&) const;
+        void drawLastPlay(Position pos, Renderer&) const;
     };
 
     template<typename GameState>

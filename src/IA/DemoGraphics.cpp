@@ -14,10 +14,10 @@ void DemoGraphics::doUpdate(Demo& demo, gm::Renderer& renderer) {
     // Desenhamos o tabuleiro
     drawBoard(renderer);
     // Pegamos o tabuleiro
-    Board stones = demo.getBoard();
+    Board board = demo.getBoard();
     for (int i = 0; i < 15; i++) {
         for(int j = 0; j < 15; j++) {
-            auto stone = stones.getPosition({i, j});
+            auto stone = board.getPosition({i, j});
             if (stone != PlayerType::EMPTY) {
                 sf::Color color = stone == PlayerType::BLACK ? GMTraits::BLACK_COLOR : GMTraits::WHITE_COLOR;
                 // gm::Stone é uma struct com uma gm::Position ({x, y}) e uma sf::Color
@@ -25,4 +25,5 @@ void DemoGraphics::doUpdate(Demo& demo, gm::Renderer& renderer) {
             }
         }
     }
+    drawLastPlay(board.getLastPlay(), renderer);
 }
